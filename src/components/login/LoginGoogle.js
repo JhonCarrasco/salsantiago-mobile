@@ -33,7 +33,7 @@ const LoginGoogle = ({navigation, toastRef}) => {
       }
 
     const verifyGoogleLogin = async (user) => {
-      // setIsLoading(true)
+      setIsLoading(true)
       
 
       fetch('https://salsantiago-api.herokuapp.com/googlemobile', {
@@ -59,18 +59,15 @@ const LoginGoogle = ({navigation, toastRef}) => {
                 .then(() => {
                     navigation.navigate('Home')
                 })
-                // console.log(x)
             }else {
                 setIsLoading(false)
                 toastRef.current.show('Inicio de sesión ha fallado')
-                // console.log(x)
             }
             
         })
         .catch(e => {
             setIsLoading(false)
             Alert.alert('Error', e)    
-            // console.log(e)        
         })    
 
     }   
