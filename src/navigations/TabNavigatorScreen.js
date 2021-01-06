@@ -4,9 +4,9 @@ import { Icon } from 'react-native-elements'
 
 
 import HomeStackScreen from './HomeStackScreen'
-import BookStackScreen from './BookStackScreen'
-import BusinessStackScreen from './BusinessStackScreen'
+import BookTabTopScreen from './BookTabTopScreen'
 import ProfileStackScreen from './ProfileStackScreen'
+import BusinessTabTopScreen from './BusinessTabTopScreen'
 
 import chooseIcon from '../utils/miscellaneous'
 
@@ -15,10 +15,10 @@ const TabScreen = createBottomTabNavigator({
       screen: HomeStackScreen,
     },
     Book: {
-        screen: BookStackScreen,
+        screen: BookTabTopScreen,
     },
     Business: {
-        screen: BusinessStackScreen,
+        screen: BusinessTabTopScreen,
     },
     Profile: {
       screen: ProfileStackScreen,
@@ -33,13 +33,8 @@ const TabScreen = createBottomTabNavigator({
         return <Icon type="material-community" name={ iconName } size={ 30 } />
       },
       tabBarOptions: {
-        activeTintColor: navigation.state.routeName == 'Home' ? '#e91e63': 'orange',
-        inactiveTintColor: 'black',
-        labelSize: {
-          fontSize: 16,
-        },
         style: {        
-          backgroundColor: '#fec',        
+          backgroundColor: '#0095ff',        
         },
         showLabel: false,
       }

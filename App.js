@@ -1,3 +1,4 @@
+import { StatusBar } from 'expo-status-bar'
 import React from 'react'
 import { LogBox } from 'react-native';
 import { Provider } from 'react-redux'
@@ -17,7 +18,8 @@ import TabNavigatorScreen from './src/navigations/TabNavigatorScreen'
 LogBox.ignoreLogs([
     'ListItem.', 
     'Animated: `useNativeDriver` was not specified.',
-    `Can't perform a React state update on an unmounted component.`
+    `Can't perform a React state update on an unmounted component.`,
+    `[Unhandled promise rejection: `
 ])
 
 const OnBoardingNavigator = createStackNavigator({
@@ -52,6 +54,7 @@ export default () => {
     return(
         <Provider store={ store }>
             <Navigation />
+            <StatusBar style="auto" />
         </Provider>
         
     )

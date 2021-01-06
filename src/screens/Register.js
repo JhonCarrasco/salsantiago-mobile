@@ -60,6 +60,7 @@ export default ({ navigation }) => {
 
     return (
         <View style={ styles.container }>
+            
             <Text style={ styles.title }>Registrarme</Text>
             <TextInput 
                 autoCapitalize = 'none'

@@ -7,9 +7,6 @@ const ProfileStackScreen = createStackNavigator({
     Profile: {
         screen: ProfileScreen,
     },
-    // Home2: {
-    //     screen: Home2Screen,
-    // }
 }, {
     initialRouteName: 'Profile'
 })

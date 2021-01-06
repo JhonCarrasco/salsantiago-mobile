@@ -25,28 +25,34 @@ const Profile = ({navigation}) => {
         setLoading(true)
 
         const token = await AsyncStorage.getItem('token')
-        const apiUser = `https://salsantiago-api.herokuapp.com/user`
+        const apiUser = `https://salsantiago-api.herokuapp.com/me`
         const resultUser = await fetch(apiUser, {
                     headers: {
                         'authorization': token,
                     },
                 })
-        let { user } = await resultUser.json()
-
-        if (!user.google) {
-            const apiAvatar = `https://salsantiago-api.herokuapp.com/avatar`
-            const resultAvatar = await fetch(apiAvatar, {
-                headers: {
-                    'authorization': token,
-                },
-            })
-            const { avatar } = await resultAvatar.json()
-            
-            if (avatar) {
-                user.googleImg = avatar.photoURL
-            } else {
-                user.googleImg = null
-            }
+        
+        let { user, ok, err } = await resultUser.json()
+                
+        if (ok) {
+            if(!user.google) {
+                const apiAvatar = `https://salsantiago-api.herokuapp.com/avatar`
+                const resultAvatar = await fetch(apiAvatar, {
+                    headers: {
+                        'authorization': token,
+                    },
+                })
+                const { avatar } = await resultAvatar.json()
+                
+                if (avatar) {
+                    user.googleImg = avatar.photoURL
+                } else {
+                    user.googleImg = null
+                }
+            }            
+        }
+        else{
+            signOut()
         }
               
         setUserInfo(user) 
@@ -92,6 +98,7 @@ const Profile = ({navigation}) => {
             />
             <Toast ref={ toastRef } position="center" opacity={0.9} />
             <Loading text={loadingText} isVisible={loading} />
+            
         </View>
     )
 }
