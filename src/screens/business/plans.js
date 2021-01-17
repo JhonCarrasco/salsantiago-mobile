@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { View, AsyncStorage } from 'react-native'
+import { AsyncStorage, SafeAreaView } from 'react-native'
 
 import ListMyPlans from '../../components/business/ListMyPlans'
+import NoContent from '../../components/NoContent'
 
-const plans = () => {
+const plans = ({ navigation }) => {
     const [myPlans, setMyPlans] = useState([])
 
     useEffect(() => {
@@ -28,7 +29,7 @@ const plans = () => {
         if(ok) {
           return user
         }else {
-           return null
+            navigation.navigate('Login')
         }
         
     }
@@ -51,9 +52,14 @@ const plans = () => {
     }
 
     return (
-        <View>
-            <ListMyPlans myPlans={ myPlans } />
-        </View>
+        <SafeAreaView style={{flex: 1}}>
+            {
+                myPlans.length > 0 
+                ? <ListMyPlans myPlans={ myPlans } />
+                : <NoContent />
+            }
+            
+        </SafeAreaView>
     )
 }
 

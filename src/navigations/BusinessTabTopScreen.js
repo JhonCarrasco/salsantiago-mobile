@@ -8,18 +8,18 @@ import RecordScreen from '../screens/business/record'
 
 
 const BusinessTabTopScreen = createMaterialTopTabNavigator({
-    Plans: {
+    Planes: {
       screen: PlansScreen,
     },
-    Record: {
+    Historial: {
         screen: RecordScreen,
     }
   }, { 
-    initialRouteName: 'Plans',
+    initialRouteName: 'Planes',
     defaultNavigationOptions: ({ navigation }) => ({
     
       tabBarOptions: {
-        activeTintColor: navigation.state.routeName == 'Plans' ? '#fff': '#fff',
+        activeTintColor: navigation.state.routeName == 'Planes' ? '#fff': '#fff',
         inactiveTintColor: '#fff',
         indicatorStyle: {
           height: null,

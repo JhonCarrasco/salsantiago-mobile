@@ -8,18 +8,18 @@ import RegistryScreen from '../screens/book/registry'
 
 
 const BookTabTopScreen = createMaterialTopTabNavigator({
-  Attendance: {
+  Asistencia: {
       screen: AttendanceScreen,
     },
-    Registry: {
-        screen: RegistryScreen,
-    }
+  Registro: {
+      screen: RegistryScreen,
+  }
   }, { 
-    initialRouteName: 'Attendance',
+    initialRouteName: 'Asistencia',
     defaultNavigationOptions: ({ navigation }) => ({
     
       tabBarOptions: {
-        activeTintColor: navigation.state.routeName == 'Attendance' ? '#fff': '#fff',
+        activeTintColor: navigation.state.routeName == 'Asistencia' ? '#fff': '#fff',
         inactiveTintColor: '#fff',
         indicatorStyle: {
           height: null,
@@ -39,8 +39,23 @@ const BookTabTopScreen = createMaterialTopTabNavigator({
           marginTop: 25,
         },
         showLabel: true,
+        
       }
     })
   })
+
+  // BookTabTopScreen.navigationOptions = ({ navigation }) => {
+
+  //   const { routeName } = navigation.state.routes[navigation.state.index]
+
+  //   // You can do whatever you like here to pick the title based on the route name
+  //   const headerTitle = routeName
+  //   console.log(headerTitle)
+
+  //   return {
+  //   headerTitle,
+  //   }
+
+  // }
 
 export default BookTabTopScreen

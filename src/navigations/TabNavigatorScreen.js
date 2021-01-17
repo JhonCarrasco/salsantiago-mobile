@@ -26,6 +26,7 @@ const TabScreen = createBottomTabNavigator({
   }, { 
     initialRouteName: 'Home',
     defaultNavigationOptions: ({ navigation }) => ({
+      
       tabBarIcon: ({ focused, horizontal, tintColor}) => {
         const { routeName } = navigation.state
         let iconName = chooseIcon(routeName, focused)
@@ -37,8 +38,10 @@ const TabScreen = createBottomTabNavigator({
           backgroundColor: '#0095ff',        
         },
         showLabel: false,
-      }
-    })
+      },
+      
+    }),
+    // resetOnBlur: true,
   })
 
 export default TabScreen

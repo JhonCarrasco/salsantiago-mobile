@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { View, AsyncStorage, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native'
+import { View, AsyncStorage, Text, StyleSheet, SafeAreaView } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select'
 import moment from 'moment'
 
-// import Loading from '../../components/Loading'
 import ListMyAttendancesRegistry from '../../components/book/ListMyAttendancesRegistry'
+import NoContent from '../../components/NoContent'
 
-const registry = () => {
+const registry = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState(null)
-  const [myPlans, setMyPlans] = useState([])
   const [myCourses, setMyCourses] = useState([])    
   const [myAttendances, setMyAttendances] = useState([])  
   const [totalAttendances, setTotalAttendances] = useState(0)
@@ -40,7 +39,7 @@ const registry = () => {
           setUserInfo(user)
           return user
         }else {
-           return null
+          navigation.navigate('Login')
         }
         
     }
@@ -56,21 +55,22 @@ const registry = () => {
       let plansData = await resultPlans.json()
 
       if( plansData.ok ) {
-        let currentDate = new Date()
-          const arrayPlans = await plansData.obj.filter( elem => moment(elem.expiration).isAfter(moment(currentDate)))                  
+        let currentDate = moment.tz(new Date(), 'America/Santiago').format()
+
+        const arrayPlans = await plansData.obj.filter( elem => moment(elem.expiration).isAfter(moment(currentDate)))                  
           
-          const arrayCourses = await arrayPlans.filter( elem => moment(elem.expiration).isAfter(moment(currentDate)))
-          .map(item => {
-            return {
-              value: item.course[0]._id,
-              label: item.course[0].description
-            }
-          })
-          setMyPlans(arrayPlans)
-          setMyCourses(arrayCourses)
+        const arrayCourses = await arrayPlans.filter( elem => moment(elem.expiration).isAfter(moment(currentDate)))
+        .map(item => {
+          return {
+            value: item.course[0]._id,
+            label: item.course[0].description
+          }
+        })
+        
+        setMyCourses(arrayCourses)
 
       } else {
-        setMyPlans([])
+        
         setMyCourses([])
       }
     }
@@ -127,8 +127,8 @@ const registry = () => {
       if( data.ok ) {
         
         setMyAttendances([...myAttendances, ...data.obj]);
-        setTotalPlans(data.total)
-        setStartPlans(startAttendance + plansData.size)
+        setTotalAttendances(data.total)
+        setStartAttendance(startAttendance + data.size)
         setIsLoading(false)
         myAttendances.length < totalAttendances
       } else {
@@ -158,7 +158,7 @@ const registry = () => {
                     isLoading={ isLoading }/> 
                   
                   </>            
-                  : <Text>Cargando...</Text>
+                  : <NoContent />
                 }
                 
             </View>

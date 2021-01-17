@@ -18,7 +18,7 @@ import ListRecords from '../../components/business/ListRecords'
 import Loading from '../../components/Loading'
 
 
-const Record = () => {
+const Record = ({ navigation }) => {
   const [ infoUser, setInfoUser] = useState(null)
   const [totalPlans, setTotalPlans] = useState(0)
   const [masterDataSource, setMasterDataSource] = useState([]);
@@ -60,7 +60,8 @@ const Record = () => {
       setInfoUser(user)
       return user
     }else {
-       return null
+      setLoading(false)
+      navigation.navigate('Login')
     }
     
   }

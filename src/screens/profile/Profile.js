@@ -7,6 +7,7 @@ import InfoUser from '../../components/profile/InfoUser'
 import AccountOptions from '../../components/profile/AccountOptions'
 import Loading from '../../components/Loading'
 
+
 const Profile = ({navigation}) => {
     const [userInfo, setUserInfo] = useState(null)
     const [loading, setLoading] = useState(false);
@@ -33,7 +34,7 @@ const Profile = ({navigation}) => {
                 })
         
         let { user, ok, err } = await resultUser.json()
-                
+        
         if (ok) {
             if(!user.google) {
                 const apiAvatar = `https://salsantiago-api.herokuapp.com/avatar`
@@ -102,6 +103,10 @@ const Profile = ({navigation}) => {
         </View>
     )
 }
+
+Profile.navigationOptions = ({
+    title: 'Perfil',
+})
 
 export default Profile
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, AsyncStorage, Alert } from 'react-native';
+import { StyleSheet, View, AsyncStorage } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 
 

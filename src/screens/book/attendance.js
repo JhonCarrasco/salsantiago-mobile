@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, AsyncStorage, Text, StyleSheet, ScrollView } from 'react-native'
-import RNPickerSelect, { defaultStyles } from 'react-native-picker-select'
+import { View, AsyncStorage, Text, StyleSheet, SafeAreaView } from 'react-native'
+import RNPickerSelect from 'react-native-picker-select'
 import moment from 'moment'
 import Toast from 'react-native-easy-toast'
 import Loading from '../../components/Loading'
 
 import ListMyAttendances from '../../components/book/ListMyAttendances'
+import NoContent from '../../components/NoContent'
 
-const attendance = () => {
+const attendance = ({ navigation }) => {
     
   const [userInfo, setUserInfo] = useState({})
   const [myPlans, setMyPlans] = useState([])
@@ -27,7 +28,8 @@ const attendance = () => {
                 getData(user)
             }      
         })  
-        setReload(false)
+      
+      setReload(false)
     }, [reload])
 
     const getUserInfo = async () => {
@@ -45,7 +47,8 @@ const attendance = () => {
         if(ok) {
           return user
         }else {
-           return null
+          setLoading(false)
+          navigation.navigate('Login')
         }
         
     }
@@ -76,18 +79,20 @@ const attendance = () => {
           setMyPlans(arrayPlans)
           setMyCourses(arrayCourses)
           setLoading(false)
+          
 
       } else {
         setMyPlans([])
         setMyCourses([])
         setLoading(false)
+        
       }
     }
 
-    const handleDropdownCourses = async (value) => {
+    const handleDropdownCourses = async (course_id) => {
       // cargar asistencia valida, según fecha
       const token = await AsyncStorage.getItem('token')
-      const api = `https://salsantiago-api.herokuapp.com/myattendances/${value}`
+      const api = `https://salsantiago-api.herokuapp.com/myattendances/${course_id}`
       fetch(api, {
                   headers: {
                     'Content-Type': 'Application/json',
@@ -104,43 +109,49 @@ const attendance = () => {
               })
               .then(data => {
                 if( data.ok ) {
-                  setMyAttendances(data.obj)
+
+                  filterData(data.obj)
+                  .then(setMyAttendances)
+
                 } else {
                   setMyAttendances([])
                 }
             })
-            .catch(err => {})
-            
+            .catch(err => {})                  
+    }
 
-                  
+    const filterData = async (data) => {
+      const currentDate = moment.tz(new Date(), 'America/Santiago').format()
+      
+      const filteredOut = await data.filter(item => moment(item.date_session).isAfter(moment(currentDate)) )
+      return filteredOut
     }
 
 
     
     return (
-
+      <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
-                  
-          <View>
+            
               <PickerSelect placeholderText={"Actividades..."} 
                             listItem={ myCourses } 
                             handleDropdownChange={ handleDropdownCourses }
                             chosenDropdown={ chosenDropdown }/>
-          </View>
-          <View>
-            { myAttendances ? 
+          
+            { myAttendances.length > 0 ? 
               <ListMyAttendances myAttendances={ myAttendances } 
                                 userId={ userInfo._id } 
                                 setReload={ setReload } 
                                 myPlans={ myPlans }
                                 toastRef={ toastRef }
                                 setChosenDropdown={ setChosenDropdown }/> 
-            : <Text>Cargando...</Text>}
-          </View>
+            : <NoContent />}
+          
           <Toast ref={ toastRef } position="center" opacity={0.9} />
 
           <Loading text={loadingText} isVisible={loading} />
-      </View>
+        </View>
+      </SafeAreaView>
         
     )
 }
